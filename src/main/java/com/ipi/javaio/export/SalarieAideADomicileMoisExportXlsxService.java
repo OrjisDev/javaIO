@@ -1,5 +1,6 @@
 package com.ipi.javaio.export;
 
+import com.ipi.javaio.model.SalarieAideADomicile;
 import com.ipi.javaio.model.SalarieAideADomicileMois;
 import com.ipi.javaio.repository.SalarieAideADomicileMoisRepository;
 import com.ipi.javaio.service.SalarieAideADomicileService;
@@ -48,16 +49,47 @@ public class SalarieAideADomicileMoisExportXlsxService {
         cellHeaderPremierDuMois.setCellValue("Premier du mois");
         cellHeaderPremierDuMois.setCellStyle(styleHeader);
 
-        // TODO
+        Cell cellHeaderIdSalarie = headerRow.createCell(COL_ID_SALARIE);
+        cellHeaderIdSalarie.setCellValue("Id Salarie");
+        cellHeaderIdSalarie.setCellStyle(styleHeader);
+
+        Cell cellHeaderNom = headerRow.createCell(COL_NOM);
+        cellHeaderNom.setCellValue("Nom");
+        cellHeaderNom.setCellStyle(styleHeader);
+
+        Cell cellHeaderJourTravailles = headerRow.createCell(COL_JOUR_TRAVAILLES_ANNEE_N);
+        cellHeaderJourTravailles.setCellValue("Jour Travailles");
+        cellHeaderJourTravailles.setCellStyle(styleHeader);
+
+        Cell cellHeaderCongesPayesAcquis = headerRow.createCell(COL_CONGES_PAYES_ACQUIS_ANNEE_N);
+        cellHeaderCongesPayesAcquis.setCellValue("Conges payes acquis");
+        cellHeaderCongesPayesAcquis.setCellStyle(styleHeader);
+
+        Cell cellHeaderAnciennete = headerRow.createCell(COL_ANCIENNETE);
+        cellHeaderAnciennete.setCellValue("Anciennete");
+        cellHeaderAnciennete.setCellStyle(styleHeader);
 
         CellStyle cellStyleBorder = newStyleBorder(workbook);
 
         Iterable<SalarieAideADomicileMois> allMois = salarieAideADomicileMoisRepository.findAll();
         int rowIndex = 1;
+        int cellIndex = 0;
         for (SalarieAideADomicileMois mois : allMois) {
             Row row = sheet.createRow(rowIndex++);
+            SalarieAideADomicile salarie = mois.getSalarieAideADomicile();
 
-            // TODO
+            Cell cellPremierDuMois = row.createCell(COL_PREMIER_DU_MOIS);
+            cellPremierDuMois.setCellValue(mois.getPremierDuMois().toString());
+            Cell cellIdSalarie = row.createCell(COL_ID_SALARIE);
+            cellIdSalarie.setCellValue(salarie.getId());
+            Cell cellNom = row.createCell(COL_NOM);
+            cellNom.setCellValue(salarie.getNom());
+            Cell cellJoursTravailles = row.createCell(COL_JOUR_TRAVAILLES_ANNEE_N);
+            cellJoursTravailles.setCellValue(mois.getJoursTravaillesAnneeN());
+            Cell cellCongesPayesAcquis = row.createCell(COL_CONGES_PAYES_ACQUIS_ANNEE_N);
+            cellCongesPayesAcquis.setCellValue(mois.getCongesPayesAcquisAnneeNMoins1());
+            Cell cellAnciennete = row.createCell(COL_ANCIENNETE);
+            cellAnciennete.setCellValue(salarie.getMoisDebutContrat());
         }
 
         workbook.write(outputStream);

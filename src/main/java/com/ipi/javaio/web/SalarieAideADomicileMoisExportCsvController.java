@@ -1,6 +1,7 @@
 package com.ipi.javaio.web;
 
 import com.ipi.javaio.export.SalarieAideADomicileMoisExportCsvService;
+import com.ipi.javaio.export.SalarieAideADomicileExportCsvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,21 @@ public class SalarieAideADomicileMoisExportCsvController {
     @Autowired
     private final SalarieAideADomicileMoisExportCsvService salarieAideADomicileMoisExportCsvService;
 
-    public SalarieAideADomicileMoisExportCsvController(SalarieAideADomicileMoisExportCsvService salarieAideADomicileMoisExportCsvService) {
+    @Autowired
+    private final SalarieAideADomicileExportCsvService salarieAideADomicileExportCsvService;
+
+    public SalarieAideADomicileMoisExportCsvController(SalarieAideADomicileMoisExportCsvService salarieAideADomicileMoisExportCsvService,
+                                                       SalarieAideADomicileExportCsvService salarieAideADomicileExportCsvService) {
         this.salarieAideADomicileMoisExportCsvService = salarieAideADomicileMoisExportCsvService;
+        this.salarieAideADomicileExportCsvService = salarieAideADomicileExportCsvService;
+    }
+
+    @GetMapping("/salarieAideADomicile/csv")
+    public void salarieAideADomicileCsv(HttpServletRequest request,HttpServletResponse response)throws IOException{
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition","attachment; filename=\"export_salarie.csv\"");
+        PrintWriter writer = response.getWriter();
+        this.salarieAideADomicileExportCsvService.export(writer);
     }
 
     @GetMapping("/salarieAideADomicileMois/csv")

@@ -41,9 +41,12 @@ public class SalarieAideADomicileMoisExportCsvService {
         exportBase(writer, allMois);
     }
     public void exportBase(PrintWriter writer, Iterable<SalarieAideADomicileMois> allMois) {
+        writer.println("Premier Du Mois;Nom;Jours Travailles par Annee;Conges payes aquis");
         for (SalarieAideADomicileMois mois : allMois) {
             SalarieAideADomicile salarie = mois.getSalarieAideADomicile();
-            // TODO [TD]
+            String line = mois.getPremierDuMois() + ";" + salarie.getNom() + ";" + mois.getJoursTravaillesAnneeN() + ";"
+                    + mois.getCongesPayesAcquisAnneeN();
+            writer.println(line);
         }
         writer.close();
     }
