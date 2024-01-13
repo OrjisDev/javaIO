@@ -1,5 +1,6 @@
 package com.ipi.javaio.web;
 
+import com.ipi.javaio.export.SalarieAideADomicileExportXlsxService;
 import com.ipi.javaio.export.SalarieAideADomicileMoisExportXlsxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,19 @@ public class SalarieAideADomicileMoisExportXlsxController {
     @Autowired
     private final SalarieAideADomicileMoisExportXlsxService salarieAideADomicileMoisExportXlsxService;
 
-    public SalarieAideADomicileMoisExportXlsxController(SalarieAideADomicileMoisExportXlsxService salarieAideADomicileMoisExportXlsxService) {
+    @Autowired
+    private final SalarieAideADomicileExportXlsxService salarieAideADomicileExportXlsxService;
+
+    public SalarieAideADomicileMoisExportXlsxController(SalarieAideADomicileMoisExportXlsxService salarieAideADomicileMoisExportXlsxService, SalarieAideADomicileExportXlsxService salarieAideADomicileExportXlsxService) {
         this.salarieAideADomicileMoisExportXlsxService = salarieAideADomicileMoisExportXlsxService;
+        this.salarieAideADomicileExportXlsxService = salarieAideADomicileExportXlsxService;
+    }
+
+    @GetMapping("/salarieAideADomicile/xlsx")
+    public void salarieAideADomicileXlsx(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setContentType("application/vnd.ms-excel");
+        response.setHeader("Content-Disposition","attachment; filename=\"export_mois.xlsx\"");
+        this.salarieAideADomicileExportXlsxService.export(response.getOutputStream());
     }
 
     @GetMapping("/salarieAideADomicileMois/xlsx")

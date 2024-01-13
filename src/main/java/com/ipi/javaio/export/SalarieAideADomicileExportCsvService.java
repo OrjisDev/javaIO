@@ -26,8 +26,10 @@ public class SalarieAideADomicileExportCsvService {
     }
 
     private void exportBase(PrintWriter writer, Iterable<SalarieAideADomicile> allSalaries) {
+        writer.println("Nom;Mois du début du contrat;Conges Payes Acquis;Jours travailles annee;Droit a des conges Payes");
         for (SalarieAideADomicile salarie : allSalaries){
-            String line = salarie.getNom();
+            String line = salarie.getNom()+";"+salarie.getMoisDebutContrat()+";"
+                    +salarie.getCongesPayesAcquisAnneeN()+";"+salarie.getJoursTravaillesAnneeN()+";"+salarie.aLegalementDroitADesCongesPayes();
             writer.println(line);
         }
         writer.close();

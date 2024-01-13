@@ -1,6 +1,6 @@
 # TD et TP IPI Interfacer une source de données en Java
 
-Ce projet est un début d'application web de gestion de salariés aide à domiciles.
+Ce projet est un début d'application web de gestion de salariés aide à domiciles et leurs congés.
 Il permet de réaliser les exercices en séance (TD) et exercices de l'évaluation (TP) du cours.
 
 **L'énoncé de ces exercices est en bas de ce README**.
@@ -39,7 +39,7 @@ Les exercices optionnels sont aussi préfixés par "BONUS".
           ou dans IntelliJ Run > Edit Configurations > Java Options (sans -D) : maven.wagon.http.ssl.insecure=true maven.wagon.http.ssl.allowall=true
           comme dit à https://stackoverflow.com/questions/45612814/maven-error-pkix-path-building-failed-unable-to-find-valid-certification-path
     - sinon Eclipse : voir https://thierry-leriche-dessirier.developpez.com/tutoriels/java/importer-projet-maven-dans-eclipse-5-min/
-- Avoir installé postgresql (ou mysql) : https://www.postgresql.org/download/
+- OPTIONNEL Avoir installé postgresql (ou mysql) : https://www.postgresql.org/download/
 
 
 ## Créer la base de données
@@ -101,8 +101,7 @@ FAQ :
 
 Voici l'organisation du code source de l'application :
 - code Java de l'application : dans le package com.ipi.javaio
-- Controllers Spring MVC (à développer) : dans le sous-package web
-- template Thymeleaf (à compléter) : dans main/resources/templates
+- Controllers Spring MVC (seuls ceux d'export sont développés) : dans le sous-package web
 - configuration : main/resources/application.properties
 
 
@@ -110,44 +109,61 @@ Voici l'organisation du code source de l'application :
 
 Après chaque TD ou TP, committez et pushez votre code après l'avoir testé.
 
-TODO
-
 CSV :
-- [TD] export TODO du bilan annuel d'une année d'un salarié (avec un mois par ligne) : exécuter l'export à http://localhost:8080/export/salarieAideADomicileMois/csv
-- ajouter la colonne congesPayesAcquisAnneeN dans SalarieAideADomicileMoisExportCsvService.export()
-- ajouter la ligne des en-têtes de colonne (nommés d'après les noms des champs dans les classes d'entité
+- [TD] export des mois d'un salarié (avec un mois par ligne) :
+  - exécuter l'export à http://localhost:8080/export/salarieAideADomicileMois/csv ; qu'obtient-on ?
+  - compléter le développement de l'export par simple concaténation dans SalarieAideADomicileMoisExportCsvService.exportBase(),
+avec au mois 3 colonnes, par exemple : la date du premier jour du mois de chaque ligne, le nom de son salarié,
+les jours travaillés en année N à la fin de ce mois
+  - ajouter la ligne des en-têtes de colonne (nommés d'après les noms des champs dans les classes d'entité
 SalarieAideADomicileMois et SalarieAideADomicile)
-- [TP] export des salariés : le développer dans TODO SalarieAideADomicileExportCsvService.export(),
-avec au moins 5 colonnes, et la ligne des en-têtes de colonne (nommés selon la même règle que précédemment)
-
-TODO : renommer ? faire marcher /1/2023 ??
-http://localhost:8080/export/salarieAideADomicileMois/csv/1/2023
+  - ajouter (si ce n'est fait) la colonne congesPayesAcquisAnneeN dans SalarieAideADomicileMoisExportCsvService.exportBase()
+  - NB. pas utilisé pour l'instant : export d'une année d'un salarié http://localhost:8080/export/salarieAideADomicileMois/csv/1/2023
+- [TP] export des salariés :
+  - exécuter l'export à http://localhost:8080/export/salarieAideADomicile/csv
+  - compléter le développement de l'export dans SalarieAideADomicileExportCsvService.exportBase(), avec au moins
+5 colonnes, et la ligne des en-têtes de colonne (nommés selon la même règle que précédemment)
+  - avec la ligne des en-têtes de colonnes
+  - BONUS rajouter l'échappement des double quotes (entourer toute valeur de double quote, et à l'intérieur
+de toute valeur doubler toute double quote). Tester en décommentant dans DataInitService.run() sous le commentaire
+"décommenter SEULEMENT après avoir implémenté la gestion de l'échappement"
 
 XLSX :
-- [TD] export TODO du bilan annuel d'une année d'un salarié : le développer dans SalarieAideADomicileMoisExportXlsxService
-- [TP] export des salariés : le développer dans SalarieAideADomicileExportXlsxService
-- [TD] TODO Créer un export XLSX multi onglet : un pour le salarié donné, et créer un onglet par mois de ce salarié
-    chaque onglet contiendra le détail du mois (colonnes : TODO) et rajouter le total TODO en bas (utilise un colspan) (voir fichier exemple TODO)
-- [TP] TODO Créer un export XLSX multi onglet : un pour l'année donnée, et créer un onglet par salarié pour cette année
-  chaque onglet contiendra le détail du mois (colonnes : TODO) et rajouter le total TODO en bas (utilise un colspan) (voir fichier exemple TODO)
-
-TODO : renommer ? faire marcher /1/2023 ??
-http://localhost:8080/export/salarieAideADomicileMois/xlsx
+- [TD] export des mois d'un salarié :
+  - le tester vide à http://localhost:8080/export/salarieAideADomicileMois/xlsx
+  - le développer dans SalarieAideADomicileMoisExportXlsxService.exportBase()
+- [TP] export des salariés :
+  - le tester vide à http://localhost:8080/export/salarieAideADomicile/xlsx
+  - le développer dans SalarieAideADomicileExportXlsxService.exportBase()
+- [TD] Créer un export XLSX multi onglet : un pour le salarié donné, et créer un onglet par mois de ce salarié
+    chaque onglet contiendra le détail du mois (colonnes : au moins comme dans l'export CSV)
+- [TP] BONUS TRIPLE Créer un export XLSX multi onglet :
+  - le développer avec un onglet pour l'année donnée, et créer un onglet par salarié pour cette année
+      chaque onglet contiendra le détail du mois (colonnes : au moins comme dans l'export CSV)
 
 PDF :
 - [TD] créer le PDF d'un mois d'un salarié
-  - en-tête : Nom du salairé, logo de l'IPI (TODO logo-ipi.jpg)
-  - Ajouter le numéro du mois et année, centré et en gras
-  - tableau contenant le détail du mois, une ligne par champ (au moins les champs TODO), en-dessous le total TODO
+  - le tester vide à http://localhost:8080/export/salarieAideADomicileMois/pdf
+  - le développer dans SalarieAideADomicileMoisExportPdfService.exportBase() ainsi :
+    - en-tête : Nom du salairé, logo de Spring Boot (à télécharger depuis https://spring.io/projects/spring-boot/ )
+    - Ajouter le numéro du mois et année, centré et en gras
+    - tableau contenant le détail du mois, une ligne par champ (au moins les mêmes champs que dans l'export CSV)
 - [TP] créer le PDF d'un salarié
-    - en-tête : Nom du salairé, logo de l'IPI (TODO logo-ipi.jpg)
-    - tableau contenant le détail du salarié, une ligne par champ (au moins les champs TODO mois début contrat et à calculer ancienneté), en-dessous le total TODO
+  - le tester vide à http://localhost:8080/export/salarieAideADomicile/pdf
+  - le développer dans SalarieAideADomicileMoisExportPdfService.exportBase() ainsi :
+    - en-tête : Nom du salairé, logo de Spring Boot (à télécharger depuis https://spring.io/projects/spring-boot/ )
+    - tableau contenant le détail du salarié, une ligne par champ (au moins les mêmes champs que dans l'export CSV
+    - BONUS : rajouter et calculer l'ancienneté (nombre d'année entre mois de début du contrat et mois en cours)
 
-TODO Import CSV :
+BONUS Import CSV :
 - décommenter la dépendance opencsv dans le fichier pom.xml (configuration du build Maven) à la racine du projet,
 s'assurer que l'IDE rebuilde le projet (dans IntelliJ avant la dernière version : clic droit sur le pom.xml > Maven > Reload project)
 - dans DataInitService.run() (à l'initialisation lorsque la base de données est vide) est appelée la méthode exportFile()
 du service de classe SalarieAideADomicileImportCsvService. Implémenter cette dernière méthode
-à l'aide de la librairie OpenCSV pour importer le fichier CSV de salariés à importer salaries_a_importer.csv
+à l'aide de la librairie OpenCSV pour importer le fichier CSV de salariés à importer salaries_a_importer.csv ainsi :
+  - s'aider du slide du cours "Le format CSV en Java - import, avec Open CSV"
+  - en utilisant la méthode creerSalarieAideADomicile() du service SalarieAideADomicileService (voir un
+exemple d'usage dans DataInitService.run())
+  - et à l'aide de Double.parseDouble() pour lire les nombres  et LocalDate.parse() pour lire les dates.
 
-TODO : JasperReports, ensemble ?
+[TD] Ensemble, s'il y a le temps : JasperReports
