@@ -15,7 +15,7 @@ import java.util.List;
 public interface SalarieAideADomicileMoisRepository extends PagingAndSortingRepository<SalarieAideADomicileMois, Long> {
 
     @Query("from SalarieAideADomicileMois salarieMois "
-            + "where salarieMois.salarieAideADomicile = :salarie and year(salarieMois) = :annee ")
+            + "where salarieMois.salarieAideADomicile = :salarie and year(salarieMois.premierDuMois) = :annee ")
     List<SalarieAideADomicileMois> findBySalarieAideADomicileAndAnnee(@Param("salarie") SalarieAideADomicile salarieAideADomicile,
                                            @Param("annee") int annee);
     List<SalarieAideADomicileMois> findBySalarieAideADomicile(SalarieAideADomicile salarieAideADomicile);

@@ -28,10 +28,23 @@ public class SalarieAideADomicileExportCsvService {
     private void exportBase(PrintWriter writer, Iterable<SalarieAideADomicile> allSalaries) {
         writer.println("Nom;Mois du début du contrat;Conges Payes Acquis;Jours travailles annee;Droit a des conges Payes");
         for (SalarieAideADomicile salarie : allSalaries){
-            String line = salarie.getNom()+";"+salarie.getMoisDebutContrat()+";"
-                    +salarie.getCongesPayesAcquisAnneeN()+";"+salarie.getJoursTravaillesAnneeN()+";"+salarie.aLegalementDroitADesCongesPayes();
+            String line = escapeCharacters(salarie.getNom())+";"+escapeCharacters(salarie.getMoisDebutContrat())+";"
+                    + escapeCharacters(salarie.getCongesPayesAcquisAnneeN())+";"+escapeCharacters(salarie.getJoursTravaillesAnneeN())
+                    +";"+escapeCharacters(salarie.aLegalementDroitADesCongesPayes());
             writer.println(line);
         }
         writer.close();
     }
+
+    private String escapeCharacters(Object text){
+        String output = "";
+        if(text != null){
+            String escapedValue = text.toString().replace("\"","\"\"");
+            output = "\""+escapedValue+"\"";
+        }
+        System.out.println(output);
+        return output;
+    }
+
+
 }

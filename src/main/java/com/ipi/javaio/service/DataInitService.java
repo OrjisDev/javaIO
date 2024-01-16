@@ -38,18 +38,20 @@ public class DataInitService implements CommandLineRunner {
         this.salarieAideADomicileService.clotureMois(s1, 8);
         this.salarieAideADomicileService.clotureMois(s1, 3);
 
-        SalarieAideADomicile s2 = this.salarieAideADomicileService.creerSalarieAideADomicile(
-                new SalarieAideADomicile("Jeannette", LocalDate.parse("2002-03-20"), LocalDate.parse("2022-09-05"),
+        // décommenter SEULEMENT après avoir implémenté la gestion de l'échappement
+
+        SalarieAideADomicile s3 = this.salarieAideADomicileService.creerSalarieAideADomicile(
+                new SalarieAideADomicile("Dupont, Jean dit \"l'ancien\"", LocalDate.parse("2002-03-20"), LocalDate.parse("2022-09-05"),
                         180, 27.5,
                         200, 30, 20));
         // 2022
-        this.salarieAideADomicileService.clotureMois(s2, 11);
-        this.salarieAideADomicileService.clotureMois(s2, 10);
-        this.salarieAideADomicileService.clotureMois(s2, 7);
+        this.salarieAideADomicileService.clotureMois(s3, 8);
+        this.salarieAideADomicileService.clotureMois(s3, 7);
+        this.salarieAideADomicileService.clotureMois(s3, 5);
         // 2023
-        this.salarieAideADomicileService.clotureMois(s2, 10);
-        this.salarieAideADomicileService.clotureMois(s2, 11);
-        this.salarieAideADomicileService.clotureMois(s2, 8);
+        this.salarieAideADomicileService.clotureMois(s3, 7);
+        this.salarieAideADomicileService.clotureMois(s3, 9);
+        this.salarieAideADomicileService.clotureMois(s3, 4);
 
         // [TD]
         salarieAideADomicileImportCsvService.importFile("salaries_a_importer.csv");
